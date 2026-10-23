@@ -1,0 +1,77 @@
+# Dipendenze JavaScript / TypeScript
+node_modules/
+# Build e file generati (rimuovere le voci usate per codice sorgente)
+/dist/
+/build/
+/out/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+.astro/
+.angular/cache/
+# Cache e strumenti di sviluppo
+.cache/
+.parcel-cache/
+.turbo/
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+# Test e copertura
+/coverage/
+/.nyc_output/
+/playwright-report/
+/test-results/
+# Configurazioni locali e segreti
+# I file di esempio devono contenere solo valori fittizi.
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+!.env.*.sample
+!.env.template
+!.env.*.template
+*.local
+# Log e file temporanei
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+/logs/
+/tmp/
+/temp/
+*.tmp
+*.temp
+# Configurazioni locali delle piattaforme di hosting
+.vercel/
+.netlify/
+# Editor e IDE: preferenze personali
+.idea/
+*.swp
+*.swo
+*~
+# Decommentare se non si vogliono condividere le impostazioni di VS Code:
+# .vscode/
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100/
+.Trashes/
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+# Linux
+.directory
+.Trash-*/
+.nfs*
+# Mantenere versionati i lockfile (package-lock.json, yarn.lock,
+# pnpm-lock.yaml, bun.lock, ecc.) per installazioni riproducibili.
+

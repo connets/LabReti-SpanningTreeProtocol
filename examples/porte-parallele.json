@@ -1,0 +1,27 @@
+{
+  "name": "Spareggio tra porte",
+  "switches": [
+    {
+      "id": "SW1"
+    },
+    {
+      "id": "SW2"
+    }
+  ],
+  "links": [
+    {
+      "from": "SW1",
+      "to": "SW2",
+      "fromPort": 2,
+      "toPort": 1,
+      "dataRateMbps": 1000
+    },
+    {
+      "from": "SW1",
+      "to": "SW2",
+      "fromPort": 1,
+      "toPort": 2,
+      "dataRateMbps": 1000
+    }
+  ]
+}

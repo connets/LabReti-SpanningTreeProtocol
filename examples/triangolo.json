@@ -1,0 +1,31 @@
+{
+  "name": "Il triangolo",
+  "switches": [
+    {
+      "id": "SW1"
+    },
+    {
+      "id": "SW2"
+    },
+    {
+      "id": "SW3"
+    }
+  ],
+  "links": [
+    {
+      "from": "SW1",
+      "to": "SW2",
+      "dataRateMbps": 100
+    },
+    {
+      "from": "SW2",
+      "to": "SW3",
+      "dataRateMbps": 100
+    },
+    {
+      "from": "SW1",
+      "to": "SW3",
+      "dataRateMbps": 100
+    }
+  ]
+}

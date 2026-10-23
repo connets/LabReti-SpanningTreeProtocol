@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f4">
+  <title>STP Lab · Simulatore didattico</title>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script src="stp.js?v=2" defer></script>
+  <script src="presets.js?v=2" defer></script>
+  <script src="app.js?v=2" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./index.html" aria-label="STP Lab, pagina iniziale"><span class="brand-mark" aria-hidden="true">↳</span><strong>STP<span>Lab</span></strong><span class="brand-divider"></span><span class="subtitle">Il protocollo, un passo alla volta.</span></a>
+    <button class="quiet-button" id="help-open">ⓘ <span>Guida al laboratorio</span></button>
+  </header>
+
+  <main>
+    <div class="page-heading"><div><p class="eyebrow">LABORATORIO DI RETI · IEEE 802.1D</p><h1>Spanning Tree Protocol<span class="heading-dot">.</span></h1><p>Scopri come una rete con percorsi ridondanti diventa un albero senza cicli.</p></div><span class="local-badge"><span></span> Tutto nel tuo browser</span></div>
+
+    <section class="workspace" aria-label="Simulatore STP">
+      <aside class="topology-panel">
+        <div class="panel-header"><h2>Topologia</h2><span class="small-label">01</span></div>
+        <label class="field-label" for="preset">SCEGLI UN ESEMPIO</label>
+        <select id="preset"><option value="redundant">Rete ridondante</option><option value="triangle">Il triangolo</option><option value="weighted">Costi diversi</option><option value="parallel">Porte parallele</option></select>
+        <div class="topology-summary"><span><b id="switch-count">5</b> switch</span><span><b id="link-count">6</b> collegamenti</span></div>
+        <div class="upload-area" id="drop-area"><span class="upload-symbol" aria-hidden="true">↥</span><strong>Porta la tua rete</strong><p>Trascina un file JSON qui</p><button id="upload" class="secondary-button">Scegli file</button><input type="file" id="file-input" accept=".json,application/json" hidden><span class="file-hint">Fino a 30 switch · 60 collegamenti</span></div>
+        <div id="file-error" class="error-box" role="alert" hidden></div>
+        <button class="text-button" id="edit-open">&lt;/&gt; Modifica il JSON</button>
+        <button class="text-button" id="download">↓ Scarica la topologia</button>
+        <details class="cost-reference"><summary>Capacità → costo standard</summary><p>Metodo IEEE 802.1D short</p><table><thead><tr><th>Capacità</th><th>Costo</th></tr></thead><tbody id="cost-reference-rows"></tbody></table></details><div class="sidebar-divider"></div>
+        <p class="field-label">COSA STAI OSSERVANDO</p>
+        <ol class="stages" id="stages"><li data-stage="0"><span>1</span><div><strong>Elezione della root</strong><small>Si confrontano i Bridge ID</small></div></li><li data-stage="1"><span>2</span><div><strong>Scelta delle porte</strong><small>Si selezionano i percorsi</small></div></li><li data-stage="2"><span>3</span><div><strong>Attivazione dell’albero</strong><small>Listening → learning → forwarding</small></div></li></ol>
+        <div class="model-note"><span aria-hidden="true">◷</span><p><strong>Un modello per imparare</strong><br>Gli scambi sono organizzati in turni didattici. I passi non sono secondi reali.</p></div>
+      </aside>
+
+      <section class="network-panel" aria-label="Rete interattiva">
+        <div class="network-toolbar"><div><span class="live-dot"></span><strong id="network-name">Rete ridondante</strong></div><div class="view-controls"><label class="switch-control"><input type="checkbox" id="tree-only"><span>Solo albero</span></label><button id="zoom-out" class="square-button" aria-label="Riduci zoom" title="Riduci zoom">−</button><button id="zoom-in" class="square-button" aria-label="Aumenta zoom" title="Aumenta zoom">+</button><button id="layout-reset" class="square-button" aria-label="Ripristina disposizione e zoom" title="Ripristina disposizione e zoom">⤢</button></div></div>
+        <div class="network-canvas" id="canvas"><div class="canvas-caption" id="canvas-caption">STATO INIZIALE <span>Ogni switch è la propria root</span></div><svg id="network" role="group" aria-label="Topologia di rete. Seleziona uno switch per ispezionarlo."></svg><div class="canvas-hint">Seleziona uno switch per esplorarlo · Trascina per spostarlo</div></div>
+        <div class="legend"><span><i class="legend-port root-port"></i> RP <small>Root port</small></span><span><i class="legend-port designated-port"></i> DP <small>Designated</small></span><span><i class="legend-port blocked-port"></i> BL <small>Bloccata</small></span><span><i class="legend-line"></i><small>Inoltro dati attivo</small></span></div>
+        <section class="event-card" aria-live="polite" aria-atomic="true"><div class="event-meta"><span class="event-number" id="event-number">00</span><span class="event-type" id="event-type">INIZIALIZZAZIONE</span><span id="round-label" class="round-label">Turno 0</span></div><h2 id="event-title"></h2><p id="event-description"></p><div id="bpdu-strip" class="bpdu-strip" hidden></div></section>
+      </section>
+
+      <aside class="inspector-panel"><div class="panel-header"><h2>Dentro lo switch</h2><span class="small-label">02</span></div><div id="inspector"></div></aside>
+
+      <section class="playback" aria-label="Controlli della simulazione"><div class="playback-buttons"><button class="square-button" id="first" aria-label="Torna all’inizio" title="Inizio (Home)">↤</button><button class="square-button" id="previous" aria-label="Passo precedente" title="Passo precedente (←)">‹</button><button class="play-button" id="play" aria-label="Riproduci simulazione">▶</button><button class="square-button" id="next" aria-label="Passo successivo" title="Passo successivo (→)">›</button><button class="square-button" id="last" aria-label="Vai al risultato finale" title="Risultato finale (End)">↦</button></div><div class="scrubber"><div class="scrubber-label"><label for="timeline">Passo <strong id="step-label">0 / 0</strong></label><span id="phase-label">Inizializzazione</span></div><input id="timeline" type="range" min="0" max="1" value="0" aria-label="Passo della simulazione"></div><label class="speed-control" for="speed">Velocità<select id="speed"><option value="1800">0.5×</option><option value="900" selected>1×</option><option value="450">2×</option><option value="180">5×</option></select></label></section>
+    </section>
+    <section class="journal-section"><div class="journal-heading"><div><p class="eyebrow">LA STORIA DELLA RETE</p><h2>Diario degli eventi</h2></div><label class="switch-control"><input type="checkbox" id="changes-only"><span>Solo cambiamenti</span></label></div><div id="journal" class="journal" aria-label="Cronologia navigabile"></div></section>
+    <footer><span>STP Lab <span class="footer-dot">·</span> Imparare osservando.</span><span>Una sola istanza STP · Collegamenti punto a punto <button id="model-open" class="footer-link">Come funziona il modello ↗</button></span></footer>
+  </main>
+
+  <dialog id="editor-dialog"><form id="editor-form"><div class="dialog-header"><div><p class="eyebrow">LA TUA RETE</p><h2>Modifica la topologia</h2></div><button type="button" class="square-button" data-close="editor-dialog" aria-label="Chiudi editor">×</button></div><p>Definisci la capacità dei link con <code>dataRateMbps</code> (in Mbps): il costo standard short è calcolato automaticamente. Per esempio, 1000 Mbps → costo 4. Porte e MAC mancanti vengono assegnati automaticamente.</p><label class="field-label" for="json-editor">TOPOLOGIA JSON</label><textarea id="json-editor" spellcheck="false" rows="18"></textarea><div id="editor-error" role="alert" class="error-box" hidden></div><div class="dialog-actions"><button type="button" class="secondary-button" data-close="editor-dialog">Annulla</button><button class="primary-button" type="submit">Carica e simula →</button></div></form></dialog>
+
+  <dialog id="help-dialog"><div class="dialog-header"><div><p class="eyebrow">GUIDA AL LABORATORIO</p><h2>Da una rete a un albero.</h2></div><button class="square-button" data-close="help-dialog" aria-label="Chiudi guida">×</button></div><div class="help-content"><h3>1. Scegli una rete</h3><p>Apri un esempio, carica un file JSON o modifica la topologia nell’editor. Ogni collegamento specifica <code>from</code>, <code>to</code> e la capacità <code>dataRateMbps</code>, in Mbps. Il costo è calcolato automaticamente dalla capacità. Puoi assegnare <code>priority</code> e <code>mac</code> agli switch, e <code>fromPort</code> / <code>toPort</code> ai collegamenti.</p><h3>2. Segui le BPDU</h3><p>Avanza di un passo per consegnare una BPDU. La freccia viola mostra mittente e destinatario. La scheda spiega la decisione; selezionando lo switch trovi la tabella delle porte e i candidati alla root port.</p><h3>3. Esplora la cronologia</h3><p>Usa i pulsanti, il cursore temporale o il diario per tornare a qualsiasi stato. Tasti: <kbd>←</kbd> / <kbd>→</kbd> per i passi, <kbd>Spazio</kbd> per riprodurre, <kbd>Home</kbd> / <kbd>End</kbd> per inizio e fine.</p><h3>Dalla capacità al costo standard</h3><p>Si usa la tabella IEEE 802.1D con metodo <strong>short</strong>: 10 Mbps → 100; 100 Mbps → 19; 1 Gbps → 4; 10 Gbps → 2; 25 e 40 Gbps → 1. Queste sono le capacità supportate. Per esempio, nel JSON <code>"dataRateMbps": 1000</code> definisce un link da 1 Gbps, con costo 4. Se manca la capacità, il valore predefinito è 100 Mbps.</p><p>Il costo non è liberamente configurabile in questo laboratorio. I vecchi file con solo <code>cost</code> sono convertiti quando la capacità corrispondente è univoca; se capacità e costo sono entrambi presenti devono essere coerenti. I costi del metodo long non sono utilizzati.</p><h3>Le regole di selezione</h3><p>La root è il bridge con il Bridge ID minimo: prima la priorità, poi il MAC. Per la root port si confrontano nell’ordine: Root ID, costo totale, Bridge ID del mittente, Port ID del mittente e Port ID locale. I Port ID hanno tutti priorità 128: qui si mostra il numero della porta.</p><h3>Un modello didattico dichiarato</h3><p>Si simula l’avvio di una sola istanza STP classica, con link punto a punto, costi simmetrici e topologia fissa. Gli scambi sono raccolti in turni sincroni; solo le porte localmente designated inviano BPDU. Ogni ricezione è un passo della cronologia.</p><p>Per rendere leggibili le fasi, tutte le porte restano in blocking fino alla stabilizzazione delle informazioni. Poi le porte RP e DP passano insieme a listening, learning e forwarding: due forward delay da 15 s, compressi in tre passi. Questi tempi sono illustrativi e non misurano la durata reale della convergenza.</p><p>Non sono simulati hello periodici dopo la convergenza, Max Age, guasti, TCN, VLAN multiple, segmenti condivisi, PortFast o RSTP. Le componenti disconnesse eleggono ciascuna la propria root.</p><p class="source-note">Riferimento: <a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-5SY/config_guide/sup2T/15_4_sy_swcg_2T/spanning_tree.html" target="_blank" rel="noreferrer">Cisco · Spanning Tree Protocol</a>; <a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/17-3/configuration_guide/lyr2/b_173_lyr2_9400_cg/configuring_spanning_tree_protocol.html" target="_blank" rel="noreferrer">tabella dei costi short</a>.</p></div></dialog>
+</body>
+</html>
